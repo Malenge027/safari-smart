@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Safari Smart - Home</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+</head>
+<body>
+    <nav class="navbar">
+        <div class="nav-brand">
+            <a th:href="@{/}">
+                <img src="https://images.unsplash.com/photo-1621414050966-3f67f3aa64a6?w=80" alt="Kilimanjaro" class="nav-logo-img">
+                Safari Smart
+            </a>
+        </div>
+        <div class="nav-links">
+            <a th:href="@{/login}"><i class="fas fa-sign-in-alt"></i> Login</a>
+        </div>
+    </nav>
+
+    <div class="hero hero-giraffes">
+        <h1><i class="fas fa-paw"></i> Discover the Wild</h1>
+        <p>Experience unforgettable safari adventures across Africa's most breathtaking destinations</p>
+        <a th:href="@{/login}" class="btn btn-primary btn-lg"><i class="fas fa-rocket"></i> Get Started</a>
+    </div>
+
+    <div class="container">
+        <div class="stats-grid">
+            <div class="stat-card">
+                <h3><i class="fas fa-binoculars"></i> <span th:text="${packageCount}">0</span></h3>
+                <p>Safari Packages</p>
+            </div>
+            <div class="stat-card">
+                <h3><i class="fas fa-calendar-check"></i> <span th:text="${bookingCount}">0</span></h3>
+                <p>Total Bookings</p>
+            </div>
+            <div class="stat-card">
+                <h3><i class="fas fa-folder-open"></i> <span th:text="${categories.size()}">0</span></h3>
+                <p>Categories</p>
+            </div>
+        </div>
+
+        <h2 class="section-title"><i class="fas fa-star"></i> Featured Packages</h2>
+        <div class="packages-grid">
+            <div class="package-card" th:each="pkg : ${packages}">
+                <div class="package-image">
+                    <img th:src="${pkg.imageUrl}" th:alt="${pkg.name}" onerror="this.src='https://images.unsplash.com/photo-1516426122078-c23e76319801?w=800'">
+                </div>
+                <div class="package-info">
+                    <span class="package-category" th:text="${pkg.category?.name}">Category</span>
+                    <h3 th:text="${pkg.name}">Package Name</h3>
+                    <p class="destination"><i class="fas fa-map-marker-alt"></i> <span th:text="${pkg.destination}">Destination</span></p>
+                    <p class="description" th:text="${pkg.description}">Description</p>
+                    <div class="package-footer">
+                        <span class="duration"><i class="fas fa-clock"></i> <span th:text="${pkg.durationDays} + ' Days'">Days</span></span>
+                        <span class="price" th:text="'$' + ${#numbers.formatInteger(pkg.price, 1, 'COMMA')}">$0</span>
+                    </div>
+                    <a th:href="@{/packages/{id}(id=${pkg.id})}" class="btn btn-primary btn-block"><i class="fas fa-eye"></i> View Details</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="giraffe-watermark">
+        <img src="https://images.unsplash.com/photo-1748799443018-1b0df21f5786?w=800" alt="Giraffes">
+    </div>
+
+    <footer class="footer">
+        <p>&copy; 2026 Safari Smart. All rights reserved.</p>
+    </footer>
+</body>
+</html>

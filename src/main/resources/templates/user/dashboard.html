@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Safari Smart - Dashboard</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+</head>
+<body>
+    <nav class="navbar">
+        <div class="nav-brand"><a th:href="@{/user/dashboard}"><img src="https://images.unsplash.com/photo-1621414050966-3f67f3aa64a6?w=80" alt="Kilimanjaro" class="nav-logo-img"> Safari Smart</a></div>
+        <div class="nav-links">
+            <a th:href="@{/user/dashboard}"><i class="fas fa-home"></i> Home</a>
+            <a th:href="@{/packages}"><i class="fas fa-binoculars"></i> Safari Packages</a>
+            <a th:href="@{/bookings/new}"><i class="fas fa-calendar-check"></i> Book Now</a>
+            <span class="nav-user"><i class="fas fa-user-circle"></i> Welcome: <span th:text="${currentUser.name}">User</span></span>
+            <a th:href="@{/logout}" class="btn btn-sm btn-danger"><i class="fas fa-sign-out-alt"></i> Logout</a>
+        </div>
+    </nav>
+
+    <div class="hero hero-giraffes">
+        <h1>Welcome, <span th:text="${currentUser.name}">User</span></h1>
+        <p>Explore our amazing safari packages and book your next adventure</p>
+        <a th:href="@{/packages}" class="btn btn-primary btn-lg"><i class="fas fa-binoculars"></i> Explore Packages</a>
+    </div>
+
+    <div class="container">
+        <h2 class="section-title"><i class="fas fa-star"></i> Safari Packages</h2>
+        <div class="packages-grid">
+            <div class="package-card" th:each="pkg : ${packages}">
+                <div class="package-image">
+                    <img th:src="${pkg.imageUrl}" th:alt="${pkg.name}" onerror="this.src='https://images.unsplash.com/photo-1516426122078-c23e76319801?w=800'">
+                </div>
+                <div class="package-info">
+                    <span class="package-category" th:text="${pkg.category?.name}">Category</span>
+                    <h3 th:text="${pkg.name}">Package Name</h3>
+                    <p class="destination"><i class="fas fa-map-marker-alt"></i> <span th:text="${pkg.destination}">Destination</span></p>
+                    <p class="description" th:text="${pkg.description}">Description</p>
+                    <div class="package-footer">
+                        <span class="duration"><i class="fas fa-clock"></i> <span th:text="${pkg.durationDays} + ' Days'">Days</span></span>
+                        <span class="price" th:text="'$' + ${#numbers.formatInteger(pkg.price, 1, 'COMMA')}">$0</span>
+                    </div>
+                    <a th:href="@{/packages/{id}(id=${pkg.id})}" class="btn btn-primary btn-block"><i class="fas fa-eye"></i> View Details</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="giraffe-watermark">
+        <img src="https://images.unsplash.com/photo-1748799443018-1b0df21f5786?w=800" alt="Giraffes">
+    </div>
+
+    <footer class="footer"><p>&copy; 2026 Safari Smart</p></footer>
+</body>
+</html>

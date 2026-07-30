@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Safari Packages</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+</head>
+<body>
+    <nav class="navbar">
+        <div class="nav-brand"><a th:href="@{/admin/dashboard}"><img src="https://images.unsplash.com/photo-1621414050966-3f67f3aa64a6?w=80" alt="Kilimanjaro" class="nav-logo-img"> Safari Smart</a></div>
+        <div class="nav-links">
+            <a th:href="@{/admin/dashboard}">Dashboard</a>
+            <a th:href="@{/packages}">Packages</a>
+            <a th:href="@{/bookings}">Bookings</a>
+            <a th:href="@{/payments}">Payments</a>
+            <a th:href="@{/users}">Users</a>
+            <a th:href="@{/logout}" class="btn btn-sm btn-danger">Logout</a>
+        </div>
+    </nav>
+
+    <div class="container">
+        <div class="page-header">
+            <h1>Safari Packages</h1>
+            <a th:href="@{/packages/new}" class="btn btn-primary">Add New Package</a>
+        </div>
+
+        <div class="table-container">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Name</th>
+                        <th>Destination</th>
+                        <th>Duration</th>
+                        <th>Price</th>
+                        <th>Capacity</th>
+                        <th>Category</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr th:each="pkg : ${packages}">
+                        <td th:text="${pkg.name}">Name</td>
+                        <td th:text="${pkg.destination}">Destination</td>
+                        <td th:text="${pkg.durationDays} + ' days'">Duration</td>
+                        <td th:text="'$' + ${#numbers.formatInteger(pkg.price, 1, 'COMMA')}">Price</td>
+                        <td th:text="${pkg.maxCapacity}">Capacity</td>
+                        <td th:text="${pkg.category?.name}">Category</td>
+                        <td class="actions">
+                            <a th:href="@{/packages/{id}(id=${pkg.id})}" class="btn btn-sm btn-info">View</a>
+                            <a th:href="@{/packages/{id}/edit(id=${pkg.id})}" class="btn btn-sm btn-warning">Edit</a>
+                            <a th:href="@{/packages/{id}/delete(id=${pkg.id})}" class="btn btn-sm btn-danger"
+                               onclick="return confirm('Are you sure?')">Delete</a>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <footer class="footer"><p>&copy; 2026 Safari Smart</p></footer>
+</body>
+</html>

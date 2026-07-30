@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Safari Smart - Make Payment</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+</head>
+<body>
+    <nav class="navbar">
+        <div class="nav-brand"><a th:href="@{/}"><img src="https://images.unsplash.com/photo-1621414050966-3f67f3aa64a6?w=80" alt="Kilimanjaro" class="nav-logo-img"> Safari Smart</a></div>
+        <div class="nav-links">
+            <a th:href="@{/packages}">Packages</a>
+            <a th:href="@{/bookings}">Bookings</a>
+        </div>
+    </nav>
+
+    <div class="container">
+        <div class="form-card">
+            <h1>Make Payment</h1>
+
+            <div class="booking-summary">
+                <h3>Booking Summary</h3>
+                <div class="info-row">
+                    <strong>Package:</strong>
+                    <span th:text="${booking.safariPackage?.name}">Package</span>
+                </div>
+                <div class="info-row">
+                    <strong>Destination:</strong>
+                    <span th:text="${booking.safariPackage?.destination}">Destination</span>
+                </div>
+                <div class="info-row">
+                    <strong>Travel Date:</strong>
+                    <span th:text="${booking.travelDate}">Date</span>
+                </div>
+                <div class="info-row">
+                    <strong>People:</strong>
+                    <span th:text="${booking.numberOfPeople}">People</span>
+                </div>
+                <div class="info-row total-row">
+                    <strong>Total Amount:</strong>
+                    <span class="price" th:text="'$' + ${#numbers.formatInteger(booking.totalAmount, 1, 'COMMA')}">$0</span>
+                </div>
+            </div>
+
+            <form th:action="@{/payments/save}" method="post">
+                <input type="hidden" name="bookingId" th:value="${booking.id}">
+
+                <h3 class="form-section-title">Your Details</h3>
+
+                <div class="form-group">
+                    <label for="customerName">Full Name</label>
+                    <input type="text" id="customerName" name="customerName" class="form-control"
+                           th:value="${booking.user?.name}" required>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="customerEmail">Email</label>
+                        <input type="email" id="customerEmail" name="customerEmail" class="form-control"
+                               th:value="${booking.user?.email}" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="customerPhone">Phone</label>
+                        <input type="tel" id="customerPhone" name="customerPhone" class="form-control"
+                               th:value="${booking.user?.phone}" required>
+                    </div>
+                </div>
+
+                <h3 class="form-section-title">Payment Method</h3>
+
+                <div class="form-group">
+                    <label for="paymentMethod">Select Payment Method</label>
+                    <select id="paymentMethod" name="paymentMethod" class="form-control" required>
+                        <option value="">Select Method</option>
+                        <option value="Mobile Money">Mobile Money (M-Pesa, Tigo Pesa, Airtel Money)</option>
+                        <option value="Bank Transfer">Bank Transfer</option>
+                        <option value="Cash">Cash</option>
+                    </select>
+                </div>
+
+                <div class="form-actions">
+                    <a th:href="@{/bookings}" class="btn btn-secondary">Cancel</a>
+                    <button type="submit" class="btn btn-primary">Submit Payment</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <footer class="footer"><p>&copy; 2026 Safari Smart</p></footer>
+</body>
+</html>

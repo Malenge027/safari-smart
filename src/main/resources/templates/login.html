@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Safari Smart - Login</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+</head>
+<body class="login-body">
+    <div class="giraffe-watermark" style="bottom:20px; right:20px; width:250px;">
+        <img src="https://images.unsplash.com/photo-1748799443018-1b0df21f5786?w=600" alt="Giraffes">
+    </div>
+    <div class="login-container">
+        <div class="login-card">
+            <div class="login-header">
+                <h1><img src="https://images.unsplash.com/photo-1621414050966-3f67f3aa64a6?w=80" alt="Kilimanjaro" class="nav-logo-img"> Safari Smart</h1>
+                <p>Sign in to your account</p>
+            </div>
+
+            <div class="error-message" th:if="${error}">
+                <p><i class="fas fa-exclamation-circle"></i> <span th:text="${error}">Error</span></p>
+            </div>
+
+            <form th:action="@{/login}" method="post">
+                <div class="form-group">
+                    <label for="email"><i class="fas fa-envelope"></i> Email</label>
+                    <input type="email" id="email" name="email" class="form-control" placeholder="Enter your email" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="password"><i class="fas fa-lock"></i> Password</label>
+                    <input type="password" id="password" name="password" class="form-control" placeholder="Enter your password">
+                    <small class="help-text">Leave empty for normal users</small>
+                </div>
+
+                <button type="submit" class="btn btn-primary btn-block btn-lg"><i class="fas fa-sign-in-alt"></i> Sign In</button>
+            </form>
+
+            <div class="login-footer">
+                <p>Don't have an account? <a th:href="@{/signup}" style="color: #1a5f2a; font-weight: 600;"><i class="fas fa-user-plus"></i> Sign Up</a></p>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

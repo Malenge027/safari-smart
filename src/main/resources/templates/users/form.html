@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Safari Smart - User Form</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+</head>
+<body>
+    <nav class="navbar">
+        <div class="nav-brand"><a th:href="@{/admin/dashboard}"><img src="https://images.unsplash.com/photo-1621414050966-3f67f3aa64a6?w=80" alt="Kilimanjaro" class="nav-logo-img"> Safari Smart</a></div>
+        <div class="nav-links">
+            <a th:href="@{/admin/dashboard}">Dashboard</a>
+            <a th:href="@{/packages}">Packages</a>
+            <a th:href="@{/bookings}">Bookings</a>
+            <a th:href="@{/payments}">Payments</a>
+            <a th:href="@{/users}">Users</a>
+            <a th:href="@{/logout}" class="btn btn-sm btn-danger">Logout</a>
+        </div>
+    </nav>
+
+    <div class="container">
+        <div class="form-card">
+            <h1 th:text="${user.id != null} ? 'Edit User' : 'New User'">User Form</h1>
+
+            <form th:action="@{/users/save}" th:object="${user}" method="post">
+                <input type="hidden" th:field="*{id}">
+
+                <div class="form-group">
+                    <label for="name">Full Name</label>
+                    <input type="text" id="name" th:field="*{name}" class="form-control" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="email">Email</label>
+                    <input type="email" id="email" th:field="*{email}" class="form-control" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="phone">Phone</label>
+                    <input type="tel" id="phone" th:field="*{phone}" class="form-control" required>
+                </div>
+
+                <div class="form-actions">
+                    <a th:href="@{/users}" class="btn btn-secondary">Cancel</a>
+                    <button type="submit" class="btn btn-primary">Save User</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <footer class="footer"><p>&copy; 2026 Safari Smart</p></footer>
+</body>
+</html>

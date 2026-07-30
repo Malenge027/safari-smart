@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Safari Smart - Users</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+</head>
+<body>
+    <nav class="navbar">
+        <div class="nav-brand"><a th:href="@{/admin/dashboard}"><img src="https://images.unsplash.com/photo-1621414050966-3f67f3aa64a6?w=80" alt="Kilimanjaro" class="nav-logo-img"> Safari Smart</a></div>
+        <div class="nav-links">
+            <a th:href="@{/admin/dashboard}">Dashboard</a>
+            <a th:href="@{/packages}">Packages</a>
+            <a th:href="@{/bookings}">Bookings</a>
+            <a th:href="@{/payments}">Payments</a>
+            <a th:href="@{/users}">Users</a>
+            <a th:href="@{/logout}" class="btn btn-sm btn-danger">Logout</a>
+        </div>
+    </nav>
+
+    <div class="container">
+        <div class="page-header">
+            <h1>Users</h1>
+            <a th:href="@{/users/new}" class="btn btn-primary">Add User</a>
+        </div>
+
+        <div class="table-container">
+            <table>
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Name</th>
+                        <th>Email</th>
+                        <th>Phone</th>
+                        <th>Role</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr th:each="user : ${users}">
+                        <td th:text="${user.id}">ID</td>
+                        <td th:text="${user.name}">Name</td>
+                        <td th:text="${user.email}">Email</td>
+                        <td th:text="${user.phone}">Phone</td>
+                        <td>
+                            <span class="badge" th:classappend="${user.role.name() == 'ADMIN'} ? 'badge-success' : 'badge-info'"
+                                  th:text="${user.role}">Role</span>
+                        </td>
+                        <td class="actions">
+                            <a th:href="@{/users/{id}/edit(id=${user.id})}" class="btn btn-sm btn-warning">Edit</a>
+                            <a th:href="@{/users/{id}/delete(id=${user.id})}" class="btn btn-sm btn-danger"
+                               onclick="return confirm('Delete this user?')">Delete</a>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <footer class="footer"><p>&copy; 2026 Safari Smart</p></footer>
+</body>
+</html>

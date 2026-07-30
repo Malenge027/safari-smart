@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Safari Smart - Package Form</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+</head>
+<body>
+    <nav class="navbar">
+        <div class="nav-brand"><a th:href="@{/admin/dashboard}"><img src="https://images.unsplash.com/photo-1621414050966-3f67f3aa64a6?w=80" alt="Kilimanjaro" class="nav-logo-img"> Safari Smart</a></div>
+        <div class="nav-links">
+            <a th:href="@{/admin/dashboard}">Dashboard</a>
+            <a th:href="@{/packages}">Packages</a>
+            <a th:href="@{/bookings}">Bookings</a>
+            <a th:href="@{/payments}">Payments</a>
+            <a th:href="@{/users}">Users</a>
+            <a th:href="@{/logout}" class="btn btn-sm btn-danger">Logout</a>
+        </div>
+    </nav>
+
+    <div class="container">
+        <div class="form-card">
+            <h1 th:text="${safariPackage.id != null} ? 'Edit Safari Package' : 'New Safari Package'">Form</h1>
+
+            <form th:action="@{/packages/save}" th:object="${safariPackage}" method="post">
+                <input type="hidden" th:field="*{id}">
+
+                <div class="form-group">
+                    <label for="name">Package Name</label>
+                    <input type="text" id="name" th:field="*{name}" class="form-control" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="description">Description</label>
+                    <textarea id="description" th:field="*{description}" class="form-control" rows="3"></textarea>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="destination">Destination</label>
+                        <input type="text" id="destination" th:field="*{destination}" class="form-control" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="durationDays">Duration (Days)</label>
+                        <input type="number" id="durationDays" th:field="*{durationDays}" class="form-control" min="1" required>
+                    </div>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="price">Price ($)</label>
+                        <input type="number" id="price" th:field="*{price}" class="form-control" step="1" min="0" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="maxCapacity">Max Capacity</label>
+                        <input type="number" id="maxCapacity" th:field="*{maxCapacity}" class="form-control" min="1" required>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="imageUrl">Image URL</label>
+                    <input type="url" id="imageUrl" th:field="*{imageUrl}" class="form-control">
+                </div>
+
+                <div class="form-group">
+                    <label for="category">Category</label>
+                    <select id="category" th:field="*{category}" class="form-control">
+                        <option value="">Select Category</option>
+                        <option th:each="cat : ${categories}" th:value="${cat.id}" th:text="${cat.name}">Category</option>
+                    </select>
+                </div>
+
+                <div class="form-actions">
+                    <a th:href="@{/packages}" class="btn btn-secondary">Cancel</a>
+                    <button type="submit" class="btn btn-primary">Save Package</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <footer class="footer"><p>&copy; 2026 Safari Smart</p></footer>
+</body>
+</html>

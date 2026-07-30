@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Safari Smart - Receipt</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <style>
+        .receipt { max-width: 600px; margin: 2rem auto; background: white; border: 2px dashed #1a5f2a; border-radius: 10px; padding: 2rem; }
+        .receipt-header { text-align: center; border-bottom: 2px solid #1a5f2a; padding-bottom: 1rem; margin-bottom: 1rem; }
+        .receipt-header h1 { color: #1a5f2a; font-size: 1.5rem; }
+        .receipt-body .info-row { display: flex; justify-content: space-between; padding: 0.4rem 0; border-bottom: 1px dotted #ddd; }
+        .receipt-body .info-row strong { color: #555; }
+        .receipt-footer { text-align: center; margin-top: 1.5rem; padding-top: 1rem; border-top: 2px solid #1a5f2a; }
+        .receipt-footer p { color: #666; font-size: 0.85rem; }
+        .status-pending { color: #e6a817; font-weight: bold; }
+        .status-verified { color: #28a745; font-weight: bold; }
+        @media print { .no-print { display: none; } body { background: white; } .receipt { border: 2px solid #000; } }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="receipt" id="receipt">
+            <div class="receipt-header">
+                <h1>Safari Smart</h1>
+                <p>Payment Receipt</p>
+                <p th:text="'Booking #' + ${booking.id}">Booking #1</p>
+            </div>
+
+            <div class="receipt-body">
+                <div class="info-row">
+                    <strong>Customer:</strong>
+                    <span th:text="${booking.user?.name}">Name</span>
+                </div>
+                <div class="info-row">
+                    <strong>Email:</strong>
+                    <span th:text="${booking.user?.email}">Email</span>
+                </div>
+                <div class="info-row">
+                    <strong>Phone:</strong>
+                    <span th:text="${booking.user?.phone}">Phone</span>
+                </div>
+                <div class="info-row">
+                    <strong>Package:</strong>
+                    <span th:text="${booking.safariPackage?.name}">Package</span>
+                </div>
+                <div class="info-row">
+                    <strong>Destination:</strong>
+                    <span th:text="${booking.safariPackage?.destination}">Destination</span>
+                </div>
+                <div class="info-row">
+                    <strong>Travel Date:</strong>
+                    <span th:text="${booking.travelDate}">Date</span>
+                </div>
+                <div class="info-row">
+                    <strong>Number of People:</strong>
+                    <span th:text="${booking.numberOfPeople}">People</span>
+                </div>
+                <div class="info-row" style="border-bottom: none; padding-top: 0.8rem;">
+                    <strong style="font-size: 1.1rem;">Total Amount:</strong>
+                    <span class="price" style="font-size: 1.3rem; color: #1a5f2a;" th:text="'$' + ${#numbers.formatInteger(booking.totalAmount, 1, 'COMMA')}">$0</span>
+                </div>
+            </div>
+
+            <th:block th:each="payment : ${payments}">
+                <div class="receipt-body" style="margin-top: 1rem; padding-top: 1rem; border-top: 2px dashed #ddd;">
+                    <div class="info-row">
+                        <strong>Receipt No:</strong>
+                        <span th:text="${payment.receiptNumber}">RCP-000</span>
+                    </div>
+                    <div class="info-row">
+                        <strong>Payment Method:</strong>
+                        <span th:text="${payment.paymentMethod}">Method</span>
+                    </div>
+                    <div class="info-row">
+                        <strong>Payment Date:</strong>
+                        <span th:text="${payment.paymentDate}">Date</span>
+                    </div>
+                    <div class="info-row">
+                        <strong>Status:</strong>
+                        <span th:class="${payment.status.name() == 'VERIFIED'} ? 'status-verified' : 'status-pending'"
+                              th:text="${payment.status}">Status</span>
+                    </div>
+                </div>
+            </th:block>
+
+            <div class="receipt-footer">
+                <p>Thank you for choosing Safari Smart!</p>
+                <p>For inquiries: +255 700 000 000 | info@safarismart.com</p>
+            </div>
+        </div>
+
+        <div class="no-print" style="text-align: center; margin: 1rem 0;">
+            <button onclick="window.print()" class="btn btn-primary">Print Receipt</button>
+            <a th:href="@{/user/dashboard}" class="btn btn-secondary">Back to Dashboard</a>
+        </div>
+    </div>
+</body>
+</html>

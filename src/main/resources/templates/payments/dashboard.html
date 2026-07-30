@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Safari Smart - Payment Dashboard</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+</head>
+<body>
+    <nav class="navbar">
+        <div class="nav-brand"><a th:href="@{/admin/dashboard}"><img src="https://images.unsplash.com/photo-1621414050966-3f67f3aa64a6?w=80" alt="Kilimanjaro" class="nav-logo-img"> Safari Smart</a></div>
+        <div class="nav-links">
+            <a th:href="@{/admin/dashboard}">Dashboard</a>
+            <a th:href="@{/packages}">Packages</a>
+            <a th:href="@{/bookings}">Bookings</a>
+            <a th:href="@{/payments}">Payments</a>
+            <a th:href="@{/users}">Users</a>
+            <a th:href="@{/logout}" class="btn btn-sm btn-danger">Logout</a>
+        </div>
+    </nav>
+
+    <div class="container">
+        <h1 class="page-title">Payment Dashboard</h1>
+
+        <div class="stats-grid">
+            <div class="stat-card stat-blue">
+                <h3 th:text="${totalPayments}">0</h3>
+                <p>Total Payments</p>
+            </div>
+            <div class="stat-card stat-orange">
+                <h3 th:text="${pendingPayments}">0</h3>
+                <p>Pending Verification</p>
+            </div>
+            <div class="stat-card stat-green">
+                <h3 th:text="${verifiedPayments}">0</h3>
+                <p>Verified Payments</p>
+            </div>
+        </div>
+
+        <div class="table-container">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Receipt No</th>
+                        <th>Customer</th>
+                        <th>Package</th>
+                        <th>Amount</th>
+                        <th>Method</th>
+                        <th>Date</th>
+                        <th>Status</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr th:each="payment : ${payments}">
+                        <td th:text="${payment.receiptNumber}">Receipt</td>
+                        <td th:text="${payment.user?.name}">Customer</td>
+                        <td th:text="${payment.booking?.safariPackage?.name}">Package</td>
+                        <td th:text="'$' + ${#numbers.formatInteger(payment.amount, 1, 'COMMA')}">Amount</td>
+                        <td th:text="${payment.paymentMethod}">Method</td>
+                        <td th:text="${payment.paymentDate}">Date</td>
+                        <td>
+                            <span class="badge"
+                                  th:classappend="${payment.status.name() == 'VERIFIED'} ? 'badge-success' : (${payment.status.name() == 'PENDING'} ? 'badge-warning' : 'badge-danger')"
+                                  th:text="${payment.status}">Status</span>
+                        </td>
+                        <td class="actions">
+                            <a th:href="@{/payments/receipt/{bookingId}(bookingId=${payment.booking?.id})}" class="btn btn-sm btn-info">Receipt</a>
+                            <a th:href="@{/payments/verify/{id}(id=${payment.id})}" class="btn btn-sm btn-success"
+                               th:if="${payment.status.name() == 'PENDING'}"
+                               onclick="return confirm('Verify this payment?')">Verify</a>
+                            <a th:href="@{/payments/reject/{id}(id=${payment.id})}" class="btn btn-sm btn-danger"
+                               th:if="${payment.status.name() == 'PENDING'}"
+                               onclick="return confirm('Reject this payment?')">Reject</a>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <footer class="footer"><p>&copy; 2026 Safari Smart</p></footer>
+</body>
+</html>

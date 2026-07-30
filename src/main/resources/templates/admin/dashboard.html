@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Safari Smart - Admin Dashboard</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+</head>
+<body>
+    <nav class="navbar">
+        <div class="nav-brand"><a th:href="@{/admin/dashboard}"><img src="https://images.unsplash.com/photo-1621414050966-3f67f3aa64a6?w=80" alt="Kilimanjaro" class="nav-logo-img"> Safari Smart</a></div>
+        <div class="nav-links">
+            <a th:href="@{/admin/dashboard}"><i class="fas fa-tachometer-alt"></i> Dashboard</a>
+            <a th:href="@{/packages}"><i class="fas fa-binoculars"></i> Packages</a>
+            <a th:href="@{/bookings}"><i class="fas fa-calendar-alt"></i> Bookings</a>
+            <a th:href="@{/payments}"><i class="fas fa-money-bill-wave"></i> Payments</a>
+            <a th:href="@{/users}"><i class="fas fa-users"></i> Users</a>
+            <span class="nav-user"><i class="fas fa-user-shield"></i> <span th:text="${currentUser.name}">Admin</span></span>
+            <a th:href="@{/logout}" class="btn btn-sm btn-danger"><i class="fas fa-sign-out-alt"></i> Logout</a>
+        </div>
+    </nav>
+
+    <div class="container">
+        <h1 class="page-title"><i class="fas fa-tachometer-alt"></i> Admin Dashboard</h1>
+
+        <div class="stats-grid">
+            <div class="stat-card stat-blue">
+                <h3><i class="fas fa-binoculars"></i> <span th:text="${packageCount}">0</span></h3>
+                <p>Safari Packages</p>
+            </div>
+            <div class="stat-card stat-green">
+                <h3><i class="fas fa-calendar-check"></i> <span th:text="${bookingCount}">0</span></h3>
+                <p>Total Bookings</p>
+            </div>
+            <div class="stat-card stat-orange">
+                <h3><i class="fas fa-clock"></i> <span th:text="${pendingPayments}">0</span></h3>
+                <p>Pending Payments</p>
+            </div>
+            <div class="stat-card stat-purple">
+                <h3><i class="fas fa-check-circle"></i> <span th:text="${verifiedPayments}">0</span></h3>
+                <p>Verified Payments</p>
+            </div>
+        </div>
+
+        <div class="dashboard-grid">
+            <div class="dashboard-card">
+                <h3><i class="fas fa-bolt"></i> Quick Actions</h3>
+                <div class="quick-actions">
+                    <a th:href="@{/packages/new}" class="btn btn-primary"><i class="fas fa-plus"></i> Add Package</a>
+                    <a th:href="@{/bookings}" class="btn btn-info"><i class="fas fa-calendar-alt"></i> View Bookings</a>
+                    <a th:href="@{/payments/dashboard}" class="btn btn-warning"><i class="fas fa-money-bill-wave"></i> Payments</a>
+                    <a th:href="@{/users}" class="btn btn-secondary"><i class="fas fa-users"></i> Manage Users</a>
+                </div>
+            </div>
+
+            <div class="dashboard-card">
+                <h3><i class="fas fa-history"></i> Recent Bookings</h3>
+                <div class="recent-list">
+                    <div class="recent-item" th:each="booking : ${bookings}" th:if="${#lists.size(bookings) > 0}">
+                        <div>
+                            <strong th:text="${booking.user?.name}">User</strong>
+                            <span th:text="' - ' + ${booking.safariPackage?.name}">Package</span>
+                        </div>
+                        <span class="badge"
+                              th:classappend="${booking.status.name() == 'CONFIRMED'} ? 'badge-success' : (${booking.status.name() == 'PENDING'} ? 'badge-warning' : 'badge-danger')"
+                              th:text="${booking.status}">Status</span>
+                    </div>
+                </div>
+                <a th:href="@{/bookings}" class="view-all-link">View all bookings &rarr;</a>
+            </div>
+        </div>
+    </div>
+
+    <div class="giraffe-watermark">
+        <img src="https://images.unsplash.com/photo-1748799443018-1b0df21f5786?w=800" alt="Giraffes">
+    </div>
+
+    <footer class="footer"><p>&copy; 2026 Safari Smart</p></footer>
+</body>
+</html>
